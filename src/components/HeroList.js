@@ -1,11 +1,12 @@
 import React from 'react'
 import Hero from './Hero'
+import heroes from './heroes.json'
 
 class HeroList extends React.Component {
     render() {
-        const heroes = ['Widowmaker', 'McCree', 'Zarya'];
-        const heroList = heroes.map((heroes) =>
-            <Hero key={heroes} hero={heroes}/>
+        // const heroes = [Genji, 'McCree', 'Zarya'];
+        const heroList = heroes.roster.map((hero) =>
+            <Hero key={hero.name} heroName={hero.name} heroLine={hero.line[0]}/>
         );
         return (
             <div>{heroList}</div>

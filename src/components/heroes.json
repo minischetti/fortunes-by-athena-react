@@ -1,0 +1,29 @@
+{
+    "roster":
+    [
+        {
+            "name": "Genji",
+            "line": [
+                "Your lackluster deflections will kill many teammates.",
+                "Your accuracy with your shuriken will be unmatched.",
+                "Attempting to throw your shuriken will yield no results.",
+                "Deflecting enemy projectiles will come natural to you.",
+                "You will eliminate many enemies with Swift Strike, consistently resetting its cooldown."
+            ],
+            "image": "url('assets/genji.jpg')",
+            "color": "#96ee42"
+        },
+        {
+            "name": "McCree",
+            "line": [
+                "Attempting to flash a Genji will ultimately lead to flashing yourself.",
+                "With a quick throw of a flashbang, you will often save teammates from certain demise.",
+                "Your field of view will become a ghost town when you call High Noon.",
+                "Your mastery of Combat Roll results in many enemy tank deaths.",
+                "Your accuracy will be above 50%."
+            ],
+            "image": "url('assets/mccree.jpg')",
+            "color": "#af595c"
+        }
+    ]
+}

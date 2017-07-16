@@ -3,7 +3,11 @@ import React from 'react'
 class Hero extends React.Component {
     render() {
         return (
-            <span className="hero">{this.props.hero}</span>
+            <div>
+                <span className="hero-name">{this.props.heroName}</span>
+                <br/>
+                <span className="hero-line">{this.props.heroLine}</span>
+            </div>
         )
     }
 }
