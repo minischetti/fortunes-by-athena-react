@@ -4,7 +4,6 @@ import heroes from './heroes.json'
 
 class HeroList extends React.Component {
     render() {
-        // const heroes = [Genji, 'McCree', 'Zarya'];
         const heroList = heroes.roster.map((hero) =>
             <Hero key={hero.name} heroName={hero.name} heroLine={hero.line[0]}/>
         );
