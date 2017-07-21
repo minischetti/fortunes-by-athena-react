@@ -24,6 +24,18 @@
             ],
             "image": "url('assets/mccree.jpg')",
             "color": "#af595c"
+        },
+        {
+            "name": "Pharah",
+            "line": [
+                "Environmental kills are in your future.",
+                "The majority of your rockets will be direct hits.",
+                "You will rule the skies.",
+                "You will be sniped often.",
+                "Your attempts to call Barrage will result in immediate death."
+                ],
+            "image": "url('assets/pharah.jpg')",
+            "color": "#3c7ac5"
         }
     ]
 }
