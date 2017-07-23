@@ -66,8 +66,26 @@ class HeroPage extends React.Component {
 class HeroList extends React.Component {
     constructor(props) {
         super(props);
-        // this.setHero = this.setHero.bind(this);
+        this.setHero = this.setHero.bind(this);
     }
+
+    searchList(query) {
+        const heroes = [...document.getElementsByClassName("hero")];
+        var searchedHero;
+        heroes.forEach(function(element) {
+            if (query === element.innerHTML) {
+                searchedHero = element.dataset.hero;
+                element.style.backgroundColor = "red";
+                console.log("We've found " + query + "!");
+                console.log(searchedHero);
+            } else {
+                element.style.backgroundColor = "initial";
+            }
+        })
+
+        return (this.setHero(searchedHero));
+    }
+
     setHero(hero) {
         var selectedHero = heroes.roster[hero]; 
         var heroLine = this.props.selectRandom(selectedHero.line);
@@ -75,13 +93,15 @@ class HeroList extends React.Component {
         console.log(selectedHero);
     }
 
-
     render() {
         const heroList = heroes.roster.map((hero) =>
-            <li onClick={() => this.setHero(hero.id)} key={hero.id}>{hero.name}</li>
+            <li className="hero" onClick={() => this.setHero(hero.id)} key={hero.id} data-hero={hero.id}>{hero.name}</li>
         );
         return (
-            <ul>{heroList}</ul>
+            <div>
+                <input type="text" onChange={event => this.searchList(event.target.value)}></input>
+                <ul>{heroList}</ul>
+            </div>
         )
     }
 }
