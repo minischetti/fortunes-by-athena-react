@@ -11,7 +11,8 @@
                 "You will eliminate many enemies with Swift Strike, consistently resetting its cooldown."
             ],
             "image":"assets/heroes/genji.jpg",
-            "color": "#96ee42"
+            "color": "#96ee42",
+            "id": "0"
         },
         {
             "name": "McCree",
@@ -23,7 +24,8 @@
                 "Your accuracy will be above 50%."
             ],
             "image":"assets/heroes/mccree.jpg",
-            "color": "#af595c"
+            "color": "#af595c",
+            "id": "1"
         },
         {
             "name": "Pharah",
@@ -35,7 +37,8 @@
                 "Your attempts to call Barrage will result in immediate death."
                 ],
             "image":"assets/heroes/pharah.jpg",
-            "color": "#3c7ac5"
+            "color": "#3c7ac5",
+            "id": "2"
         }
     ]
 }

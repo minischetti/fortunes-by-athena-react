@@ -12,11 +12,18 @@ class App extends React.Component {
         this.setState({selectedHero, heroLine})
     }
 
+    selectRandom(element) {
+        return element[Math.floor(Math.random() * element.length)];
+    }
+
     render() {
-        const selectedHero = this.state.selectedHero;
-        const heroLine = this.state.heroLine;
+        var selectedHero = this.state.selectedHero;
+        var heroLine = this.state.heroLine;
         return (
-            <HeroPage mysteryHero={this.updateHeroState} selectedHero={selectedHero} heroLine={heroLine}/>
+            <div>
+                <HeroPage selectRandom={this.selectRandom} mysteryHero={this.updateHeroState} selectedHero={selectedHero} heroLine={heroLine}/>
+                <HeroList selectRandom={this.selectRandom} setHero={this.updateHeroState} mysteryHero={this.updateHeroState} selectedHero={selectedHero} heroLine={heroLine}/>
+            </div>
         )
     }
 }
@@ -27,16 +34,21 @@ class HeroPage extends React.Component {
         this.mysteryHero = this.mysteryHero.bind(this);
     }
 
-
-    selectRandom(element) {
-        return element[Math.floor(Math.random() * element.length)]
-    }
-
     mysteryHero() {
-        const selectedHero = this.selectRandom(heroes.roster)
-        const heroLine = this.selectRandom(selectedHero.line)
+        var selectedHero = this.props.selectRandom(heroes.roster);
+        var heroLine = this.props.selectRandom(selectedHero.line);
         this.props.mysteryHero(selectedHero, heroLine);
+        console.log(selectedHero);
     }
+
+    componentWillUpdate(nextProps, nextState) {
+        // alert("Component will update after this alert...");
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        // alert("Component just updated...");
+    }
+
     render() {
         return (
             <div>
@@ -47,6 +59,29 @@ class HeroPage extends React.Component {
                 <div className="backgroundTint" style={{backgroundColor: this.props.selectedHero.color}}></div>
                 <img className="heroImage" src={this.props.selectedHero.image}/>
             </div>
+        )
+    }
+}
+
+class HeroList extends React.Component {
+    constructor(props) {
+        super(props);
+        // this.setHero = this.setHero.bind(this);
+    }
+    setHero(hero) {
+        var selectedHero = heroes.roster[hero]; 
+        var heroLine = this.props.selectRandom(selectedHero.line);
+        this.props.setHero(selectedHero, heroLine);
+        console.log(selectedHero);
+    }
+
+
+    render() {
+        const heroList = heroes.roster.map((hero) =>
+            <li onClick={() => this.setHero(hero.id)} key={hero.id}>{hero.name}</li>
+        );
+        return (
+            <ul>{heroList}</ul>
         )
     }
 }
