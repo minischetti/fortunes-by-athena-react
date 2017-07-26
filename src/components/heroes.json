@@ -10,7 +10,8 @@
                 "Deflecting enemy projectiles will come natural to you.",
                 "You will eliminate many enemies with Swift Strike, consistently resetting its cooldown."
             ],
-            "image":"assets/heroes/genji.jpg",
+            "background": "assets/backgrounds/genji.jpg",
+            "portrait": "assets/portraits/genji.png",
             "color": "#96ee42",
             "id": "0"
         },
@@ -23,7 +24,8 @@
                 "Your mastery of Combat Roll results in many enemy tank deaths.",
                 "Your accuracy will be above 50%."
             ],
-            "image":"assets/heroes/mccree.jpg",
+            "background": "assets/backgrounds/mccree.jpg",
+            "portrait": "assets/portraits/mccree.png",
             "color": "#af595c",
             "id": "1"
         },
@@ -36,7 +38,8 @@
                 "You will be sniped often.",
                 "Your attempts to call Barrage will result in immediate death."
                 ],
-            "image":"assets/heroes/pharah.jpg",
+            "background": "assets/backgrounds/pharah.jpg",
+            "portrait": "assets/portraits/pharah.png",
             "color": "#3c7ac5",
             "id": "2"
         }

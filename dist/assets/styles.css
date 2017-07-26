@@ -67,3 +67,24 @@ html, body {
     opacity: .25;
     z-index: -1
 }
+
+.heroName {
+    position: absolute;
+    right: 4rem;
+    bottom: 4rem;
+}
+
+.heroLine {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center;
+    transition: 1s all;
+}
+
+.hero {
+    height: 10rem;
+    border-radius: 50%;
+}

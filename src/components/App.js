@@ -35,35 +35,38 @@ class App extends React.Component {
 }
 
 class HeroPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.mysteryHero = this.mysteryHero.bind(this);
-    }
-
     mysteryHero() {
         var selectedHero = this.props.selectRandom(heroes.roster);
         var heroLine = this.props.selectRandom(selectedHero.line);
         this.props.mysteryHero(selectedHero, heroLine);
-        console.log(selectedHero);
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        // alert("Component will update after this alert...");
-    }
+    // componentWillUpdate(nextProps, nextState) {
+    //     var heroLine = document.getElementById("heroLine");
+    //     heroLine.classList.remove("fadeIn");
+    //     heroLine.classList.remove("fadeOut");
+    //     heroLine.classList.add("fadeOut");
+    //     // alert("Component will update after this alert...");
+    // }
 
-    componentDidUpdate(prevProps, prevState) {
-        // alert("Component just updated...");
-    }
+    // componentDidUpdate(prevProps, prevState) {
+    //     var heroLine = document.getElementById("heroLine");
+    //     heroLine.classList.remove("fadeOut");
+    //     heroLine.classList.remove("fadeIn");
+    //     heroLine.classList.add("fadeIn");
+    //     // alert("Component just updated...");
+    // }
 
     render() {
         return (
             <div>
-                <span className="mysteryHeroButton" onClick={this.mysteryHero}>Mystery<span className="mysteryKey">M</span></span> 
-                <span>{this.props.selectedHero.name}</span>
-                <br/>
-                <span>{this.props.heroLine}</span>
-                <div className="backgroundTint" style={{backgroundColor: this.props.selectedHero.color}}></div>
-                <img className="heroImage" src={this.props.selectedHero.image}/>
+                <span className="mysteryHeroButton" onClick={() => this.mysteryHero()}>Mystery<span className="mysteryKey">M</span></span> 
+                <span className="heroName">{this.props.selectedHero.name}</span>
+                <span id="heroLine" className="heroLine">{this.props.heroLine}</span>
+                <div>
+                    <div className="backgroundTint" style={{backgroundColor: this.props.selectedHero.color}}></div>
+                    <img className="heroImage" src={this.props.selectedHero.background}/>
+                </div>
             </div>
         )
     }
@@ -72,24 +75,31 @@ class HeroPage extends React.Component {
 class HeroList extends React.Component {
     searchList(query) {
         const heroes = [...document.getElementsByClassName("hero")];
-        const heroSearchField = document.getElementById("heroSearchField");
         var searchedHero;
         var pattern = new RegExp(query.toLowerCase());
         heroes.forEach(function(element) {
-            var hero = element.innerHTML.toLowerCase();
+            var hero = element.dataset.hero.toLowerCase();
+            console.log(hero);
             if (query && pattern.test(hero)) {
-                searchedHero = element.dataset.hero;
-                element.style.backgroundColor = "red";
+                searchedHero = element.dataset.id;
+                 element.style.opacity = "1";
+                // element.style.backgroundColor = "red";
             } else {
-                element.style.backgroundColor = "initial";
+                element.style.opacity = ".25";
+                // element.style.backgroundColor = "initial";
             }
+            if (!query) element.style.opacity = "1";
         });
         this.props.searchList(searchedHero);
     }
 
     checkKey(key) {
+        const heroSearchField = document.getElementById("heroSearchField");
         if(key === 13) {
             this.setHero(this.props.searchedHero);
+        }
+        if (key === 27) {
+            heroSearchField.value = "";
         }
     }
 
@@ -102,7 +112,8 @@ class HeroList extends React.Component {
 
     render() {
         const heroList = heroes.roster.map((hero) =>
-            <li className="hero" onClick={() => this.setHero(hero.id)} key={hero.id} data-hero={hero.id}>{hero.name}</li>
+            <img className="hero" src={hero.portrait} style={{backgroundColor: hero.color}} onClick={() => this.setHero(hero.id)} key={hero.id} data-id={hero.id} data-hero={hero.name}/>
+            // <li className="hero" onClick={() => this.setHero(hero.id)} key={hero.id} data-hero={hero.id}>{hero.name}</li>
         );
         return (
             <div>
