@@ -4,12 +4,17 @@ import heroes from './heroes.json'
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { selectedHero: "", heroLine: ""};
+        this.state = { selectedHero: "", heroLine: "", searchedHero: ""};
         this.updateHeroState = this.updateHeroState.bind(this);
+        this.updateSearchedHero = this.updateSearchedHero.bind(this);
     }
 
     updateHeroState(selectedHero, heroLine) {
-        this.setState({selectedHero, heroLine})
+        this.setState({selectedHero, heroLine});
+    }
+
+    updateSearchedHero(searchedHero) {
+        this.setState({searchedHero});
     }
 
     selectRandom(element) {
@@ -19,10 +24,11 @@ class App extends React.Component {
     render() {
         var selectedHero = this.state.selectedHero;
         var heroLine = this.state.heroLine;
+        var searchedHero = this.state.searchedHero;
         return (
             <div>
                 <HeroPage selectRandom={this.selectRandom} mysteryHero={this.updateHeroState} selectedHero={selectedHero} heroLine={heroLine}/>
-                <HeroList selectRandom={this.selectRandom} setHero={this.updateHeroState} mysteryHero={this.updateHeroState} selectedHero={selectedHero} heroLine={heroLine}/>
+                <HeroList selectRandom={this.selectRandom} setHero={this.updateHeroState} mysteryHero={this.updateHeroState} searchList={this.updateSearchedHero} selectedHero={selectedHero} heroLine={heroLine} searchedHero={searchedHero}/>
             </div>
         )
     }
@@ -64,26 +70,27 @@ class HeroPage extends React.Component {
 }
 
 class HeroList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.setHero = this.setHero.bind(this);
-    }
-
     searchList(query) {
         const heroes = [...document.getElementsByClassName("hero")];
+        const heroSearchField = document.getElementById("heroSearchField");
         var searchedHero;
+        var pattern = new RegExp(query.toLowerCase());
         heroes.forEach(function(element) {
-            if (query === element.innerHTML) {
+            var hero = element.innerHTML.toLowerCase();
+            if (query && pattern.test(hero)) {
                 searchedHero = element.dataset.hero;
                 element.style.backgroundColor = "red";
-                console.log("We've found " + query + "!");
-                console.log(searchedHero);
             } else {
                 element.style.backgroundColor = "initial";
             }
-        })
+        });
+        this.props.searchList(searchedHero);
+    }
 
-        return (this.setHero(searchedHero));
+    checkKey(key) {
+        if(key === 13) {
+            this.setHero(this.props.searchedHero);
+        }
     }
 
     setHero(hero) {
@@ -99,7 +106,7 @@ class HeroList extends React.Component {
         );
         return (
             <div>
-                <input type="text" onChange={event => this.searchList(event.target.value)}></input>
+                <input type="text" id="heroSearchField" onKeyDown={event => this.checkKey(event.keyCode)} onChange={event => this.searchList(event.target.value)}></input>
                 <ul>{heroList}</ul>
             </div>
         )
