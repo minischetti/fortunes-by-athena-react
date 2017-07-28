@@ -3,11 +3,7 @@ import React from 'react'
 class Hero extends React.Component {
     render() {
         return (
-            <div>
-                <span className="hero-name">{this.props.heroName}</span>
-                <br/>
-                <span className="hero-line">{this.props.heroLine}</span>
-            </div>
+            <img className="hero" src={hero.portrait} style={{backgroundColor: hero.color}} onClick={() => this.setHero(hero.id)} key={hero.id} data-id={hero.id} data-hero={hero.name}/>
         )
     }
 }

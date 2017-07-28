@@ -17,29 +17,39 @@ class App extends React.Component {
         this.setState({searchedHero});
     }
 
-    selectRandom(element) {
-        return element[Math.floor(Math.random() * element.length)];
-    }
-
     render() {
         var selectedHero = this.state.selectedHero;
         var heroLine = this.state.heroLine;
         var searchedHero = this.state.searchedHero;
         return (
             <div>
-                <HeroPage selectRandom={this.selectRandom} mysteryHero={this.updateHeroState} selectedHero={selectedHero} heroLine={heroLine}/>
-                <HeroList selectRandom={this.selectRandom} setHero={this.updateHeroState} mysteryHero={this.updateHeroState} searchList={this.updateSearchedHero} selectedHero={selectedHero} heroLine={heroLine} searchedHero={searchedHero}/>
+                <HeroPage mysteryHero={this.updateHeroState} setHero={this.updateHeroState} searchList={this.updateSearchedHero} selectedHero={selectedHero} heroLine={heroLine} searchedHero={searchedHero}/>
             </div>
         )
     }
 }
 
 class HeroPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.setHero = this.setHero.bind(this);
+    }
+    selectRandom(element) {
+        return element[Math.floor(Math.random() * element.length)];
+    }
+
     mysteryHero() {
-        var selectedHero = this.props.selectRandom(heroes.roster);
-        var heroLine = this.props.selectRandom(selectedHero.line);
+        var selectedHero = this.selectRandom(heroes.roster);
+        var heroLine = this.selectRandom(selectedHero.line);
         this.props.mysteryHero(selectedHero, heroLine);
     }
+
+    setHero(hero) {
+        var selectedHero = heroes.roster[hero];
+        var heroLine = this.selectRandom(selectedHero.line);
+        this.props.setHero(selectedHero, heroLine);
+    }
+    
 
     // componentWillUpdate(nextProps, nextState) {
     //     var heroLine = document.getElementById("heroLine");
@@ -67,26 +77,29 @@ class HeroPage extends React.Component {
                     <div className="backgroundTint" style={{backgroundColor: this.props.selectedHero.color}}></div>
                     <img className="heroImage" src={this.props.selectedHero.background}/>
                 </div>
+                 <HeroList setHero={this.setHero} searchList={this.props.searchList} searchedHero={this.props.searchedHero}/> 
             </div>
         )
     }
 }
 
 class HeroList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.searchList = this.searchList.bind(this);
+    }
+
     searchList(query) {
         const heroes = [...document.getElementsByClassName("hero")];
         var searchedHero;
         var pattern = new RegExp(query.toLowerCase());
         heroes.forEach(function(element) {
             var hero = element.dataset.hero.toLowerCase();
-            console.log(hero);
             if (query && pattern.test(hero)) {
                 searchedHero = element.dataset.id;
-                 element.style.opacity = "1";
-                // element.style.backgroundColor = "red";
+                element.style.opacity = "1";
             } else {
                 element.style.opacity = ".25";
-                // element.style.backgroundColor = "initial";
             }
             if (!query) element.style.opacity = "1";
         });
@@ -96,30 +109,39 @@ class HeroList extends React.Component {
     checkKey(key) {
         const heroSearchField = document.getElementById("heroSearchField");
         if(key === 13) {
-            this.setHero(this.props.searchedHero);
+            this.props.setHero(this.props.searchedHero);
         }
-        if (key === 27) {
+        // Disabled due to opacity not restoring after field is cleared
+        // if (key === 27) {
+        //     heroSearchField.value = "";
+        // }
+        if (key === 72) {
             heroSearchField.value = "";
         }
     }
 
-    setHero(hero) {
-        var selectedHero = heroes.roster[hero]; 
-        var heroLine = this.props.selectRandom(selectedHero.line);
-        this.props.setHero(selectedHero, heroLine);
-        console.log(selectedHero);
-    }
-
     render() {
         const heroList = heroes.roster.map((hero) =>
-            <img className="hero" src={hero.portrait} style={{backgroundColor: hero.color}} onClick={() => this.setHero(hero.id)} key={hero.id} data-id={hero.id} data-hero={hero.name}/>
-            // <li className="hero" onClick={() => this.setHero(hero.id)} key={hero.id} data-hero={hero.id}>{hero.name}</li>
+            <Hero key={hero.id} hero={hero} setHero={this.props.setHero}/>
         );
         return (
             <div>
                 <input type="text" id="heroSearchField" onKeyDown={event => this.checkKey(event.keyCode)} onChange={event => this.searchList(event.target.value)}></input>
                 <ul>{heroList}</ul>
             </div>
+        )
+    }
+}
+
+class Hero extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        const hero = this.props.hero;
+            // console.log(this.props.hero.id);
+        return (
+            <img className="hero" src={hero.portrait} style={{backgroundColor: hero.color}} onClick={() => this.props.setHero(hero.id)} data-id={hero.id} data-hero={hero.name}/>
         )
     }
 }
