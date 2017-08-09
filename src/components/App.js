@@ -33,7 +33,9 @@ class HeroPage extends React.Component {
     constructor(props) {
         super(props);
         this.setHero = this.setHero.bind(this);
+        this.state = { showHeroList: false, favoriteHeroes: [] };
     }
+
     selectRandom(element) {
         return element[Math.floor(Math.random() * element.length)];
     }
@@ -48,6 +50,15 @@ class HeroPage extends React.Component {
         var selectedHero = heroes.roster[hero];
         var heroLine = this.selectRandom(selectedHero.line);
         this.props.setHero(selectedHero, heroLine);
+    }
+
+    updateFavoriteHeroes(hero) {
+        this.setState({favoriteHeroes: hero});
+        console.log(this.state.favoriteHeroes);
+    }
+
+    showHeroList() {
+        this.setState({showHeroList: !this.state.showHeroList });
     }
     
 
@@ -68,6 +79,7 @@ class HeroPage extends React.Component {
     // }
 
     render() {
+        const showHeroList = this.state.showHeroList;
         return (
             <div>
                 <span className="mysteryHeroButton" onClick={() => this.mysteryHero()}>Mystery<span className="mysteryKey">M</span></span> 
@@ -77,7 +89,41 @@ class HeroPage extends React.Component {
                     <div className="backgroundTint" style={{backgroundColor: this.props.selectedHero.color}}></div>
                     <img className="heroImage" src={this.props.selectedHero.background}/>
                 </div>
-                 <HeroList setHero={this.setHero} searchList={this.props.searchList} searchedHero={this.props.searchedHero}/> 
+                <span onClick={() => this.showHeroList()}>Show Hero List</span>
+                {showHeroList && <HeroList setHero={this.setHero} searchList={this.props.searchList} searchedHero={this.props.searchedHero}/>}
+            </div>
+        )
+    }
+}
+
+class ContextMenu extends React.Component {
+    constructor(props) {
+        super(props);
+        this.positionMenu = this.positionMenu.bind(this);
+    }
+    positionMenu(event) {
+        var contextMenu = document.getElementById("contextMenu");
+        // Position menu at cursor
+        var xPos = event.clientX;
+        var yPos = event.clientY;
+
+        event.preventDefault();
+
+        // Position the menu via CSS
+        contextMenu.style.left = xPos + "px";
+        contextMenu.style.top = yPos + "px";
+    }
+    componentDidMount() {
+        this.positionMenu(event);
+    }
+    componentDidUpdate() {
+        this.positionMenu(event);
+
+    }
+    render() {
+        return (
+            <div id="contextMenu">
+                <span onClick={(hero) => this.props.updateFavoriteHeroes(hero)}>Add to Favorites</span>
             </div>
         )
     }
@@ -86,7 +132,8 @@ class HeroPage extends React.Component {
 class HeroList extends React.Component {
     constructor(props) {
         super(props);
-        this.searchList = this.searchList.bind(this);
+        this.state = { showContextMenu: false };
+        this.showContextMenu = this.showContextMenu.bind(this);
     }
 
     searchList(query) {
@@ -120,12 +167,19 @@ class HeroList extends React.Component {
         }
     }
 
+    showContextMenu(event) {
+        this.setState({ showContextMenu: true });
+    }
+
     render() {
+        //  showContextMenu={this.props.showContextMenu} onContextMenu={(event) => this.props.showContextMenu(event, hero)}
         const heroList = heroes.roster.map((hero) =>
-            <Hero key={hero.id} hero={hero} setHero={this.props.setHero}/>
+            <Hero key={hero.id} hero={hero} setHero={this.props.setHero} showContextMenu={this.showContextMenu}/>
         );
+        const showContextMenu = this.state.showContextMenu;
         return (
             <div>
+                {showContextMenu && <ContextMenu/>}
                 <input type="text" id="heroSearchField" onKeyDown={event => this.checkKey(event.keyCode)} onChange={event => this.searchList(event.target.value)}></input>
                 <ul>{heroList}</ul>
             </div>
@@ -134,14 +188,13 @@ class HeroList extends React.Component {
 }
 
 class Hero extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         const hero = this.props.hero;
             // console.log(this.props.hero.id);
         return (
-            <img className="hero" src={hero.portrait} style={{backgroundColor: hero.color}} onClick={() => this.props.setHero(hero.id)} data-id={hero.id} data-hero={hero.name}/>
+            <div>
+                <img className="hero" src={hero.portrait} style={{backgroundColor: hero.color}} onClick={() => this.props.setHero(hero.id)} onContextMenu={(event) => this.props.showContextMenu(event)} data-id={hero.id} data-hero={hero.name}/>
+            </div>
         )
     }
 }

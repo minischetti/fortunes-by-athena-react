@@ -88,3 +88,16 @@ html, body {
     height: 10rem;
     border-radius: 50%;
 }
+
+#contextMenu {
+    /* display: none; */
+    position: absolute;
+    width: 20rem;
+    height: 4rem;
+    background-color: black;
+    color: white;
+}
+
+#contextMenu.active {
+    display: block;
+}
