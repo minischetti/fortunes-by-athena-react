@@ -4,7 +4,7 @@ import heroes from './heroes.json'
 class HeroPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { selectedHero: "", heroLine: "", searchedHero: "", showHeroList: false };
+        this.state = { selectedHero: "", heroLine: "", searchedHero: "", favoriteHeroes: [], showHeroList: false };
         this.setHero = this.setHero.bind(this);
         this.updateSearchedHero = this.updateSearchedHero.bind(this);
     }
@@ -14,14 +14,14 @@ class HeroPage extends React.Component {
     }
 
     mysteryHero() {
-        var selectedHero = this.selectRandom(heroes.roster);
-        var heroLine = this.selectRandom(selectedHero.line);
+        const selectedHero = this.selectRandom(heroes.roster);
+        const heroLine = this.selectRandom(selectedHero.line);
         this.setState({selectedHero, heroLine})
     }
 
     setHero(hero) {
-        var selectedHero = heroes.roster[hero];
-        var heroLine = this.selectRandom(selectedHero.line);
+        const selectedHero = heroes.roster[hero];
+        const heroLine = this.selectRandom(selectedHero.line);
         this.setState({selectedHero, heroLine})
     }
 
@@ -51,9 +51,9 @@ class HeroPage extends React.Component {
     // }
 
     render() {
-        var selectedHero = this.state.selectedHero;
-        var heroLine = this.state.heroLine;
-        var searchedHero = this.state.searchedHero;
+        const selectedHero = this.state.selectedHero;
+        const heroLine = this.state.heroLine;
+        const searchedHero = this.state.searchedHero;
         const showHeroList = this.state.showHeroList;
         return (
             <div>
@@ -82,10 +82,10 @@ class HeroList extends React.Component {
 
     searchList(query) {
         const heroes = [...document.getElementsByClassName("hero")];
-        var searchedHero;
-        var pattern = new RegExp(query.toLowerCase());
+        const pattern = new RegExp(query.toLowerCase());
+        let searchedHero;
         heroes.forEach(function(element) {
-            var hero = element.dataset.hero.toLowerCase();
+            const hero = element.dataset.hero.toLowerCase();
             if (query && pattern.test(hero)) {
                 searchedHero = element.dataset.id;
                 element.style.opacity = "1";
@@ -183,10 +183,11 @@ class Hero extends React.Component {
     render() {
         const hero = this.props.hero;
         const isFavorite = this.state.isFavorite;
+        const favoriteStatus = isFavorite ? "Remove Favorite" : "Add Favorite";
         return (
             <div>
                 <img className="hero" src={hero.portrait} style={{backgroundColor: hero.color}} onClick={() => this.props.setHero(hero.id)} onContextMenu={() => this.props.showContextMenu(hero.id)} data-id={hero.id} data-hero={hero.name}/>
-                <button onClick={() => this.handleFavoriteState(hero.id)}>Add to Favorite</button>
+                <button onClick={() => this.handleFavoriteState(hero.id)}>{favoriteStatus}</button>
                 {isFavorite && <span>{hero.name} has been added to your favorites!</span>}
             </div>
         )
@@ -199,10 +200,10 @@ class ContextMenu extends React.Component {
         this.positionMenu = this.positionMenu.bind(this);
     }
     positionMenu(event) {
-        var contextMenu = document.getElementById("contextMenu");
+        const contextMenu = document.getElementById("contextMenu");
         // Position menu at cursor
-        var xPos = event.clientX;
-        var yPos = event.clientY;
+        const xPos = event.clientX;
+        const yPos = event.clientY;
 
         event.preventDefault();
 
