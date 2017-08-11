@@ -7,6 +7,7 @@ class HeroPage extends React.Component {
         this.state = { selectedHero: "", heroLine: "", searchedHero: "", favoriteHeroes: [], showHeroList: false };
         this.setHero = this.setHero.bind(this);
         this.updateSearchedHero = this.updateSearchedHero.bind(this);
+        this.updateFavoriteHeroes = this.updateFavoriteHeroes.bind(this);
     }
 
     selectRandom(element) {
@@ -27,6 +28,10 @@ class HeroPage extends React.Component {
 
     updateSearchedHero(searchedHero) {
         this.setState({searchedHero});
+    }
+
+    updateFavoriteHeroes(favoriteHeroes) {
+        this.setState({favoriteHeroes: favoriteHeroes});
     }
 
     showHeroList() {
@@ -55,6 +60,7 @@ class HeroPage extends React.Component {
         const heroLine = this.state.heroLine;
         const searchedHero = this.state.searchedHero;
         const showHeroList = this.state.showHeroList;
+        const favoriteHeroes = this.state.favoriteHeroes;
         return (
             <div>
                 <span className="mysteryHeroButton" onClick={() => this.mysteryHero()}>Mystery<span className="mysteryKey">M</span></span>
@@ -65,7 +71,7 @@ class HeroPage extends React.Component {
                     <img className="heroImage" src={selectedHero.background}/>
                 </div>
                 <span onClick={() => this.showHeroList()}>Show Hero List</span>
-                {showHeroList && <HeroList setHero={this.setHero} searchList={this.updateSearchedHero} searchedHero={searchedHero}/>}
+                {showHeroList && <HeroList setHero={this.setHero} searchList={this.updateSearchedHero} searchedHero={searchedHero} favoriteHeroes={favoriteHeroes} updateFavoriteHeroes={this.updateFavoriteHeroes}/>}
             </div>
         )
     }
@@ -74,10 +80,15 @@ class HeroPage extends React.Component {
 class HeroList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { showContextMenu: false, currentHero: "", favoriteHeroes: [] };
+        this.state = { showContextMenu: false, currentHero: "" };
         this.showContextMenu = this.showContextMenu.bind(this);
         this.updateFavoriteHeroes = this.updateFavoriteHeroes.bind(this);
         this.isFavorite = this.isFavorite.bind(this);
+    }
+
+    componentDidMount() {
+        const favoriteHeroes = this.state.favoriteHeroes;
+        this.setState({favoriteHeroes: this.props.favoriteHeroes});
     }
 
     searchList(query) {
@@ -116,23 +127,21 @@ class HeroList extends React.Component {
     }
 
     updateFavoriteHeroes(hero) {
-        const favoriteHeroes = this.state.favoriteHeroes;
+        const favoriteHeroes = this.props.favoriteHeroes;
         // If the hero isn't already a favorite, add it
         if (!favoriteHeroes.includes(hero)) {
-            this.setState({ favoriteHeroes: [...favoriteHeroes, hero], showContextMenu: false });
+            this.props.updateFavoriteHeroes([...favoriteHeroes, hero]);
         }
-        // If the hero is already a favorite, remove it
+        // If the hero is a favorite, remove it
         if (favoriteHeroes.includes(hero)) {
-            // debugger;
             const heroPosition = favoriteHeroes.indexOf(hero);
             favoriteHeroes.splice(heroPosition, 1);
-            this.setState({ favoriteHeroes: favoriteHeroes, showContextMenu: false });
+            this.props.updateFavoriteHeroes(favoriteHeroes);
         }
     }
 
     isFavorite(hero) {
-        // debugger;
-        const favoriteHeroes = this.state.favoriteHeroes;
+        const favoriteHeroes = this.props.favoriteHeroes;
         if (favoriteHeroes.includes(hero)) {
             return true;
         } else {
@@ -168,11 +177,6 @@ class Hero extends React.Component {
         if(isFavorite) {
             this.setState({isFavorite: true});
         }
-    }
-    
-    isFavorite() {
-        // console.log(this.props.isFavorite());
-        // // this.setState({isFavorite: true});
     }
 
     handleFavoriteState(hero) {
