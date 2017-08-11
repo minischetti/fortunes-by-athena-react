@@ -110,15 +110,9 @@ class HeroList extends React.Component {
 
     checkKey(key) {
         const heroSearchField = document.getElementById("heroSearchField");
+        // Enter
         if(key === 13) {
             this.props.setHero(this.props.searchedHero);
-        }
-        // Disabled due to opacity not restoring after field is cleared
-        // if (key === 27) {
-        //     heroSearchField.value = "";
-        // }
-        if (key === 72) {
-            heroSearchField.value = "";
         }
     }
 
