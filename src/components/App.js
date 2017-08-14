@@ -88,7 +88,7 @@ class HeroList extends React.Component {
 
     componentDidMount() {
         const favoriteHeroes = this.state.favoriteHeroes;
-        this.setState({favoriteHeroes: this.props.favoriteHeroes});
+        // this.setState({favoriteHeroes: this.props.favoriteHeroes});
     }
 
     searchList(query) {
@@ -123,14 +123,15 @@ class HeroList extends React.Component {
             const heroPosition = favoriteHeroes.indexOf(hero);
             favoriteHeroes.splice(heroPosition, 1);
             this.props.updateFavoriteHeroesState(favoriteHeroes);
+            this.setState({ showContextMenu: false });
             return;
         }
         // If the hero isn't already a favorite, add it
         if (!favoriteHeroes.includes(hero)) {
             this.props.updateFavoriteHeroesState([...favoriteHeroes, hero]);
+            this.setState({ showContextMenu: false });
             return;
         }
-        // this.setState({ showContextMenu: false });
     }
 
     showContextMenu(hero) {
@@ -169,6 +170,15 @@ class Hero extends React.Component {
         const isFavorite = this.props.isFavorite();
         if(isFavorite) {
             this.setState({isFavorite: true});
+        }
+    }
+
+    componentWillReceiveProps() {
+        const isFavorite = this.props.isFavorite();
+        if (isFavorite) {
+            this.setState({ isFavorite: true });
+        } else {
+            this.setState({ isFavorite: false });
         }
     }
 
