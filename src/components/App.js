@@ -62,7 +62,7 @@ class HeroPage extends React.Component {
         const showHeroList = this.state.showHeroList;
         const favoriteHeroes = this.state.favoriteHeroes;
         return (
-            <div>
+            <div id="hero-page">
                 <span className="mysteryHeroButton" onClick={() => this.mysteryFortune()}>Mystery<span className="mysteryKey">M</span></span>
                 <span className="heroName">{selectedHero.name}</span>
                 <span id="heroLine" className="heroLine">{heroLine}</span>
@@ -70,7 +70,7 @@ class HeroPage extends React.Component {
                     <div className="backgroundTint" style={{backgroundColor: selectedHero.color}}></div>
                     <img className="heroImage" src={selectedHero.background}/>
                 </div>
-                <span onClick={() => this.showHeroList()}>Show Hero List</span>
+                <span className="toggle-hero-list" onClick={() => this.showHeroList()}>Show Hero List</span>
                 {showHeroList && <HeroList generateFortune={this.generateFortune} updateSearchedHero={this.updateSearchedHero} searchedHero={searchedHero} favoriteHeroes={favoriteHeroes} updateFavoriteHeroesState={this.updateFavoriteHeroesState}/>}
             </div>
         )
@@ -151,10 +151,10 @@ class HeroList extends React.Component {
         const showContextMenu = this.state.showContextMenu;
         const currentHero = this.state.currentHero;
         return (
-            <div>
+            <div className="hero-list-container">
                 {showContextMenu && <ContextMenu currentHero={currentHero} updateFavoriteHeroes={this.updateFavoriteHeroes} isFavorite={this.isFavorite}/>}
-                <input type="text" id="heroSearchField" onKeyDown={event => this.checkKey(event.keyCode)} onChange={event => this.searchList(event.target.value)}></input>
-                <ul>{heroList}</ul>
+                <input type="text" id="heroSearchField" className="search" onKeyDown={event => this.checkKey(event.keyCode)} onChange={event => this.searchList(event.target.value)}></input>
+                <div className="hero-list">{heroList}</div>
             </div>
         )
     }
@@ -198,9 +198,9 @@ class Hero extends React.Component {
         const hero = this.props.hero;
         const isFavorite = this.state.isFavorite;
         return (
-            <div>
-                <img className="hero" src={hero.portrait} style={{backgroundColor: hero.color}} onClick={() => this.props.generateFortune(hero.id)} onContextMenu={() => this.props.showContextMenu(hero.id)} data-id={hero.id} data-hero={hero.name}/>
-                {isFavorite && <span>{hero.name} has been added to your favorites!</span>}
+            <div className={`hero${isFavorite ? " favorite" : ""}`} onClick={() => this.props.generateFortune(hero.id)} onContextMenu={() => this.props.showContextMenu(hero.id)} data-id={hero.id} data-hero={hero.name}>
+                <img className="hero-portrait" src={hero.portrait} style={{backgroundColor: "black"}}/>
+                {isFavorite && <img className="favorite-icon" src="assets/icons/heart.svg"/>}
             </div>
         )
     }

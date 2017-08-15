@@ -49,6 +49,37 @@ html, body {
     color: #fff;
 }
 
+.hero-list-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    z-index: 1;
+    background-color: rgba(0,0,0,.5);
+}
+
+.hero-list {
+    display: flex;
+    margin: auto;
+    flex: 1;
+    justify-content: space-evenly;
+}
+
+.toggle-hero-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.search {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 .heroImage {
     position: absolute;
     top: 0;
@@ -85,8 +116,29 @@ html, body {
 }
 
 .hero {
+    position: relative;
+    width: 10rem;
     height: 10rem;
+}
+
+.hero-portrait {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
+    border: 4px solid black;
+}
+
+.favorite-icon {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%,50%);
+}
+
+.hero.favorite .hero-portrait {
+    border-color: red;
 }
 
 #contextMenu {
@@ -96,6 +148,7 @@ html, body {
     height: 4rem;
     background-color: black;
     color: white;
+    z-index: 1
 }
 
 #contextMenu.active {
