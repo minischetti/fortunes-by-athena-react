@@ -152,7 +152,7 @@ class HeroList extends React.Component {
         const currentHero = this.state.currentHero;
         return (
             <div>
-                {showContextMenu && <ContextMenu currentHero={currentHero} updateFavoriteHeroes={this.updateFavoriteHeroes}/>}
+                {showContextMenu && <ContextMenu currentHero={currentHero} updateFavoriteHeroes={this.updateFavoriteHeroes} isFavorite={this.isFavorite}/>}
                 <input type="text" id="heroSearchField" onKeyDown={event => this.checkKey(event.keyCode)} onChange={event => this.searchList(event.target.value)}></input>
                 <ul>{heroList}</ul>
             </div>
@@ -173,6 +173,13 @@ class Hero extends React.Component {
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if(this.state.isFavorite !== nextState.isFavorite) {
+            return true;
+        }
+        return false;
+    }
+
     componentWillReceiveProps() {
         const isFavorite = this.props.isFavorite();
         if (isFavorite) {
@@ -190,11 +197,9 @@ class Hero extends React.Component {
     render() {
         const hero = this.props.hero;
         const isFavorite = this.state.isFavorite;
-        const favoriteStatus = isFavorite ? "Remove Favorite" : "Add Favorite";
         return (
             <div>
                 <img className="hero" src={hero.portrait} style={{backgroundColor: hero.color}} onClick={() => this.props.generateFortune(hero.id)} onContextMenu={() => this.props.showContextMenu(hero.id)} data-id={hero.id} data-hero={hero.name}/>
-                {/* <button onClick={() => this.handleFavoriteState(hero.id)}>{favoriteStatus}</button> */}
                 {isFavorite && <span>{hero.name} has been added to your favorites!</span>}
             </div>
         )
@@ -230,9 +235,11 @@ class ContextMenu extends React.Component {
 
     render() {
         const currentHero = this.props.currentHero;
+        const isFavorite = this.props.isFavorite(currentHero);
+        const favoriteText = isFavorite ? "Remove Favorite" : "Add Favorite";
         return (
             <div id="contextMenu">
-                <span onClick={(hero) => this.props.updateFavoriteHeroes(currentHero)}>Add to Favorites</span>
+                <span onClick={(hero) => this.props.updateFavoriteHeroes(currentHero)}>{favoriteText}</span>
             </div>
         )
     }
