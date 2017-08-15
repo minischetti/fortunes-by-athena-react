@@ -70,7 +70,7 @@ class HeroPage extends React.Component {
                     <div className="backgroundTint" style={{backgroundColor: selectedHero.color}}></div>
                     <img className="heroImage" src={selectedHero.background}/>
                 </div>
-                <span className="toggle-hero-list" onClick={() => this.showHeroList()}>Show Hero List</span>
+                <span className="toggle-hero-list" onClick={() => this.showHeroList()}>Press <span className="key">H</span> to Switch Heroes</span>
                 {showHeroList && <HeroList generateFortune={this.generateFortune} updateSearchedHero={this.updateSearchedHero} searchedHero={searchedHero} favoriteHeroes={favoriteHeroes} updateFavoriteHeroesState={this.updateFavoriteHeroesState}/>}
             </div>
         )

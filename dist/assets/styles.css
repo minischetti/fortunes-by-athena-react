@@ -68,10 +68,22 @@ html, body {
 }
 
 .toggle-hero-list {
+    display: flex;
     position: absolute;
-    top: 0;
-    left: 0;
+    bottom: 2rem;
+    left: 50%;
     z-index: 2;
+    transform: translateX(-50%);
+    line-height: 4rem;
+}
+
+.key {
+    width: 4rem;
+    height: 4rem;
+    border: 2px solid black;
+    border-radius: 4px;
+    margin: auto 1rem;
+    text-align: center;
 }
 
 .search {
