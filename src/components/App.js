@@ -1,5 +1,42 @@
 import React from 'react'
 import heroes from './heroes.json'
+import Transition from 'react-transition-group/Transition';
+
+// const Fade = ({ children, ...props }) => (
+//     <CSSTransition
+//         {...props}
+//         timeout={5000}
+//         classNames="fade"
+//     >
+//         {children}
+//     </CSSTransition>
+// );
+
+// https://reactcommunity.org/react-transition-group/
+
+const duration = 300;
+
+const defaultStyle = {
+    transition: `opacity ${duration}ms ease-in-out`,
+    opacity: 0,
+}
+
+const transitionStyles = {
+    entering: { opacity: 1 },
+    entered: { opacity: 1 },
+};
+
+
+const Fade = ({ children, in: inProp }) => (
+    <Transition in={inProp} timeout={duration}>
+        {(state) => (
+            <div style={{...defaultStyle, ...transitionStyles[state]}}>
+                {children}
+            </div>
+        )}
+    </Transition>
+);
+
 
 class HeroPage extends React.Component {
     constructor(props) {
@@ -63,15 +100,17 @@ class HeroPage extends React.Component {
         const favoriteHeroes = this.state.favoriteHeroes;
         return (
             <div id="hero-page">
-                <span className="mysteryHeroButton" onClick={() => this.mysteryFortune()}>Mystery<span className="mysteryKey">M</span></span>
-                <span className="heroName">{selectedHero.name}</span>
-                <span id="heroLine" className="heroLine">{heroLine}</span>
+                <span className="mystery-hero-button" onClick={() => this.mysteryFortune()}>Mystery<span className="mystery-key">M</span></span>
+                <span className="hero-name">{selectedHero.name}</span>
+                <span id="hero-line" className="hero-line">{heroLine}</span>
                 <div>
-                    <div className="backgroundTint" style={{backgroundColor: selectedHero.color}}></div>
-                    <img className="heroImage" src={selectedHero.background}/>
+                    <div className="background-tint" style={{backgroundColor: selectedHero.color}}></div>
+                    <img className="hero-image" src={selectedHero.background}/>
                 </div>
                 <span className="toggle-hero-list" onClick={() => this.showHeroList()}>Press <span className="key">H</span> to Switch Heroes</span>
-                {showHeroList && <HeroList generateFortune={this.generateFortune} updateSearchedHero={this.updateSearchedHero} searchedHero={searchedHero} favoriteHeroes={favoriteHeroes} updateFavoriteHeroesState={this.updateFavoriteHeroesState}/>}
+                <Fade in={this.state.showHeroList}>
+                    <HeroList generateFortune={this.generateFortune} updateSearchedHero={this.updateSearchedHero} searchedHero={searchedHero} favoriteHeroes={favoriteHeroes} updateFavoriteHeroesState={this.updateFavoriteHeroesState} showHeroList={this.state.showHeroList}/>
+                </Fade>
             </div>
         )
     }
