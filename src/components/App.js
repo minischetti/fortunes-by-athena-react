@@ -1,12 +1,12 @@
 import React from 'react'
 import heroes from './heroes.json'
-import Transition from 'react-transition-group/Transition';
 
 class HeroPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = { selectedHero: "", heroLine: "", searchedHero: "", favoriteHeroes: [], showHeroList: false };
         this.generateFortune = this.generateFortune.bind(this);
+        this.showHeroList = this.showHeroList.bind(this);
         this.updateSearchedHero = this.updateSearchedHero.bind(this);
         this.updateFavoriteHeroesState = this.updateFavoriteHeroesState.bind(this);
     }
@@ -24,6 +24,7 @@ class HeroPage extends React.Component {
     generateFortune(hero) {
         const selectedHero = heroes.roster[hero];
         const heroLine = this.selectRandom(selectedHero.line);
+        this.showHeroList();
         this.setState({selectedHero, heroLine})
     }
 
@@ -72,7 +73,6 @@ class HeroList extends React.Component {
 
     componentDidMount() {
         const favoriteHeroes = this.state.favoriteHeroes;
-        // this.setState({favoriteHeroes: this.props.favoriteHeroes});
     }
 
     searchList(query) {
@@ -183,7 +183,7 @@ class Hero extends React.Component {
         return (
             <div className={`hero${isFavorite ? " favorite" : ""}`} onClick={() => this.props.generateFortune(hero.id)} onContextMenu={() => this.props.showContextMenu(hero.id)} data-id={hero.id} data-hero={hero.name}>
                 <img className="hero-portrait" src={hero.portrait} style={{backgroundColor: "black"}}/>
-                {isFavorite && <img className="favorite-icon" src="assets/icons/heart.svg"/>}
+                <img className={`favorite-icon${isFavorite ? " active" : ""}`} src="assets/icons/heart.svg"/>
             </div>
         )
     }

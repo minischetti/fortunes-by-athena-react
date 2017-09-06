@@ -147,12 +147,19 @@ html, body {
     position: absolute;
     bottom: 0;
     left: 50%;
-    transform: translate(-50%,50%);
+    opacity: 0;
+    transform: translate(-50%,50%) scale(0);
+    transition: .25s all;
 }
 
-.hero.favorite .hero-portrait {
-    border-color: red;
+.favorite-icon.active {
+    opacity: 1;
+    transform: translate(-50%,50%) scale(1);
 }
+
+/*.hero.favorite .hero-portrait {
+    border-color: red;
+}*/
 
 #contextMenu {
     /* display: none; */
