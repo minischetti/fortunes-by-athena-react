@@ -7,6 +7,7 @@ class HeroPage extends React.Component {
         this.state = { selectedHero: "", heroLine: "", searchedHero: "", favoriteHeroes: [], showHeroList: false };
         this.generateFortune = this.generateFortune.bind(this);
         this.showHeroList = this.showHeroList.bind(this);
+        this.isFavorite = this.isFavorite.bind(this);
         this.updateSearchedHero = this.updateSearchedHero.bind(this);
         this.updateFavoriteHeroesState = this.updateFavoriteHeroesState.bind(this);
     }
@@ -40,12 +41,18 @@ class HeroPage extends React.Component {
         this.setState({showHeroList: !this.state.showHeroList });
     }
 
+    isFavorite(hero) {
+        const favoriteHeroes = this.state.favoriteHeroes;
+        return favoriteHeroes.includes(hero);
+    }
+
     render() {
         const selectedHero = this.state.selectedHero;
         const heroLine = this.state.heroLine;
         const searchedHero = this.state.searchedHero;
         const showHeroList = this.state.showHeroList;
         const favoriteHeroes = this.state.favoriteHeroes;
+        const isSelectedHeroFavorite = this.isFavorite(this.state.selectedHero.id);
         return (
             <div id="hero-page">
                 <span className="mystery-hero-button" onClick={() => this.mysteryFortune()}>Mystery<span className="mystery-key">M</span></span>
@@ -56,7 +63,8 @@ class HeroPage extends React.Component {
                     <img className="hero-image" src={selectedHero.background}/>
                 </div>
                 <span className="toggle-hero-list" onClick={() => this.showHeroList()}>Press <span className="key">H</span> to Switch Heroes</span>
-                {showHeroList && <HeroList generateFortune={this.generateFortune} updateSearchedHero={this.updateSearchedHero} searchedHero={searchedHero} favoriteHeroes={favoriteHeroes} updateFavoriteHeroesState={this.updateFavoriteHeroesState}/>}
+                {isSelectedHeroFavorite && <span>This hero is a favorite!</span>}
+                {showHeroList && <HeroList generateFortune={this.generateFortune} updateSearchedHero={this.updateSearchedHero} searchedHero={searchedHero} favoriteHeroes={favoriteHeroes} updateFavoriteHeroesState={this.updateFavoriteHeroesState} isFavorite={this.isFavorite}/>}
             </div>
         )
     }
@@ -68,7 +76,6 @@ class HeroList extends React.Component {
         this.state = { showContextMenu: false, currentHero: "" };
         this.showContextMenu = this.showContextMenu.bind(this);
         this.updateFavoriteHeroes = this.updateFavoriteHeroes.bind(this);
-        this.isFavorite = this.isFavorite.bind(this);
     }
 
     componentDidMount() {
@@ -122,20 +129,15 @@ class HeroList extends React.Component {
         this.setState({ showContextMenu: true, currentHero: hero });
     }
 
-    isFavorite(hero) {
-        const favoriteHeroes = this.props.favoriteHeroes;
-        return favoriteHeroes.includes(hero);
-    }
-
     render() {
         const heroList = heroes.roster.map((hero) =>
-            <Hero key={hero.id} hero={hero} generateFortune={this.props.generateFortune} showContextMenu={this.showContextMenu} updateCurrentHero={this.updateCurrentHero} updateFavoriteHeroes={this.updateFavoriteHeroes} isFavorite={() => this.isFavorite(hero.id)}/>
+            <Hero key={hero.id} hero={hero} generateFortune={this.props.generateFortune} showContextMenu={this.showContextMenu} updateCurrentHero={this.updateCurrentHero} updateFavoriteHeroes={this.updateFavoriteHeroes} isFavorite={() => this.props.isFavorite(hero.id)}/>
         );
         const showContextMenu = this.state.showContextMenu;
         const currentHero = this.state.currentHero;
         return (
             <div className="hero-list-container">
-                {showContextMenu && <ContextMenu currentHero={currentHero} updateFavoriteHeroes={this.updateFavoriteHeroes} isFavorite={this.isFavorite}/>}
+                {showContextMenu && <ContextMenu currentHero={currentHero} updateFavoriteHeroes={this.updateFavoriteHeroes} isFavorite={this.props.isFavorite}/>}
                 <input type="text" id="heroSearchField" className="search" onKeyDown={event => this.checkKey(event.keyCode)} onChange={event => this.searchList(event.target.value)}></input>
                 <div className="hero-list">{heroList}</div>
             </div>
