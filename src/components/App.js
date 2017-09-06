@@ -2,42 +2,6 @@ import React from 'react'
 import heroes from './heroes.json'
 import Transition from 'react-transition-group/Transition';
 
-// const Fade = ({ children, ...props }) => (
-//     <CSSTransition
-//         {...props}
-//         timeout={5000}
-//         classNames="fade"
-//     >
-//         {children}
-//     </CSSTransition>
-// );
-
-// https://reactcommunity.org/react-transition-group/
-
-const duration = 300;
-
-const defaultStyle = {
-    transition: `opacity ${duration}ms ease-in-out`,
-    opacity: 0,
-}
-
-const transitionStyles = {
-    entering: { opacity: 1 },
-    entered: { opacity: 1 },
-};
-
-
-const Fade = ({ children, in: inProp }) => (
-    <Transition in={inProp} timeout={duration}>
-        {(state) => (
-            <div style={{...defaultStyle, ...transitionStyles[state]}}>
-                {children}
-            </div>
-        )}
-    </Transition>
-);
-
-
 class HeroPage extends React.Component {
     constructor(props) {
         super(props);
@@ -75,23 +39,6 @@ class HeroPage extends React.Component {
         this.setState({showHeroList: !this.state.showHeroList });
     }
 
-
-    // componentWillUpdate(nextProps, nextState) {
-    //     var heroLine = document.getElementById("heroLine");
-    //     heroLine.classList.remove("fadeIn");
-    //     heroLine.classList.remove("fadeOut");
-    //     heroLine.classList.add("fadeOut");
-    //     // alert("Component will update after this alert...");
-    // }
-
-    // componentDidUpdate(prevProps, prevState) {
-    //     var heroLine = document.getElementById("heroLine");
-    //     heroLine.classList.remove("fadeOut");
-    //     heroLine.classList.remove("fadeIn");
-    //     heroLine.classList.add("fadeIn");
-    //     // alert("Component just updated...");
-    // }
-
     render() {
         const selectedHero = this.state.selectedHero;
         const heroLine = this.state.heroLine;
@@ -108,9 +55,7 @@ class HeroPage extends React.Component {
                     <img className="hero-image" src={selectedHero.background}/>
                 </div>
                 <span className="toggle-hero-list" onClick={() => this.showHeroList()}>Press <span className="key">H</span> to Switch Heroes</span>
-                <Fade in={this.state.showHeroList}>
-                    <HeroList generateFortune={this.generateFortune} updateSearchedHero={this.updateSearchedHero} searchedHero={searchedHero} favoriteHeroes={favoriteHeroes} updateFavoriteHeroesState={this.updateFavoriteHeroesState} showHeroList={this.state.showHeroList}/>
-                </Fade>
+                {showHeroList && <HeroList generateFortune={this.generateFortune} updateSearchedHero={this.updateSearchedHero} searchedHero={searchedHero} favoriteHeroes={favoriteHeroes} updateFavoriteHeroesState={this.updateFavoriteHeroesState}/>}
             </div>
         )
     }
@@ -175,7 +120,6 @@ class HeroList extends React.Component {
 
     showContextMenu(hero) {
         this.setState({ showContextMenu: true, currentHero: hero });
-        // this.updateFavoriteHeroes(hero);
     }
 
     isFavorite(hero) {
@@ -260,14 +204,14 @@ class ContextMenu extends React.Component {
         event.preventDefault();
 
         // Position the menu via CSS
-        contextMenu.style.left = xPos + "px";
-        contextMenu.style.top = yPos + "px";
+        contextMenu.style.left = `${xPos}px`;
+        contextMenu.style.top = `${yPos}px`;
     }
 
     componentDidMount() {
         this.positionMenu(event);
     }
-    
+
     componentDidUpdate() {
         this.positionMenu(event);
     }
