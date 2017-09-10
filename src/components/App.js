@@ -186,6 +186,7 @@ class Hero extends React.Component {
             <div className={`hero${isFavorite ? " favorite" : ""}`} onClick={() => this.props.generateFortune(hero.id)} onContextMenu={() => this.props.showContextMenu(hero.id)} data-id={hero.id} data-hero={hero.name}>
                 <img className="hero-portrait" src={hero.portrait} style={{backgroundColor: "black"}}/>
                 <img className={`favorite-icon${isFavorite ? " active" : ""}`} src="assets/icons/heart.svg"/>
+                <span>{hero.name}</span>
             </div>
         )
     }

@@ -128,18 +128,63 @@ html, body {
     transition: 1s all;
 }
 
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 20px #2FFFFF;
+    }
+    50% {
+        box-shadow: 0 0 40px #2FFFFF;
+    }
+    100% {
+        box-shadow: 0 0 20px #2FFFFF;
+    }
+}
+
 .hero {
     position: relative;
     width: 10rem;
     height: 10rem;
 }
 
+.hero span {
+    display: block;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    transition: .25s all;
+}
+
+.hero:hover span {
+    transform: translateY(1rem);
+    opacity: 1;
+}
+
 .hero-portrait {
+    position: relative;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 4px solid black;
+    border: 4px solid #2FFFFF;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    animation: 1s pulse infinite;
+    opacity: 0;
+    transition: 1s all;
+}
+
+.hero:hover:after {
+    opacity: 1;
 }
 
 .favorite-icon {
