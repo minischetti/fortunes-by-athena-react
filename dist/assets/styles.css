@@ -3,7 +3,9 @@ html {
 }
 
 body {
-    font-size: 1.6rem;
+    font-family: 'Big Noodle Oblique';
+    font-size: 2.4rem;
+    letter-spacing: .1rem;
 }
 
 html, body {
@@ -12,10 +14,19 @@ html, body {
     margin: 0;
 }
 
+@font-face {
+  font-family: 'Big Noodle';
+  src: url('fonts/big-noodle.woff') format('woff');
+}
+@font-face {
+  font-family: 'Big Noodle Oblique';
+  src: url('fonts/big-noodle-oblique.woff') format('woff');
+}
+
 .mystery-hero-button {
     cursor: pointer;
     position: absolute;
-    top: 0;
+    top: 2rem;
     left: 50%;
     transform: translateX(-50%);
     width: 10rem;
@@ -28,6 +39,7 @@ html, body {
     font-size: 2rem;
     transition: .25s all;
     box-sizing: border-box;
+    user-select: none;
 }
 
 .mystery-key {
@@ -58,7 +70,6 @@ html, body {
     display: flex;
     z-index: 1;
     background-color: rgba(0,0,0,.5);
-    /* opacity: 0; */
 }
 
 .hero-list {
@@ -76,6 +87,7 @@ html, body {
     z-index: 2;
     transform: translateX(-50%);
     line-height: 4rem;
+    user-select: none;
 }
 
 .key {
@@ -114,6 +126,7 @@ html, body {
 
 .hero-name {
     position: absolute;
+    font-size: 3.6rem;
     right: 4rem;
     bottom: 4rem;
 }
@@ -125,6 +138,7 @@ html, body {
     transform: translate(-50%, -50%);
     width: 90%;
     text-align: center;
+    font-size: 3.6rem;
     transition: 1s all;
 }
 
