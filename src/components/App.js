@@ -136,7 +136,7 @@ class HeroList extends React.Component {
         const showContextMenu = this.state.showContextMenu;
         const currentHero = this.state.currentHero;
         return (
-            <div className="hero-list-container">
+            <div className="hero-list-container active">
                 {showContextMenu && <ContextMenu currentHero={currentHero} updateFavoriteHeroes={this.updateFavoriteHeroes} isFavorite={this.props.isFavorite}/>}
                 <input type="text" id="heroSearchField" className="search" onKeyDown={event => this.checkKey(event.keyCode)} onChange={event => this.searchList(event.target.value)}></input>
                 <div className="hero-list">{heroList}</div>
