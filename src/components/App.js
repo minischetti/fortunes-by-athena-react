@@ -178,7 +178,7 @@ class Hero extends React.Component {
             <div className={`hero${isFavorite ? " favorite" : ""}`} data-id={hero.id} data-hero={hero.name}>
                 <img className="hero-portrait"  onClick={() => this.props.generateFortune(hero.id)} src={hero.portrait} style={{backgroundColor: "black"}}/>
                 <div className="favorite-icon-container" onClick={() => this.props.updateFavoriteHeroes(hero.id)}>
-                    <img className={`favorite-icon${isFavorite ? " active" : ""}`} src="assets/icons/star.svg"/>
+                    <svg className={`favorite-icon${isFavorite ? " active" : ""}`} width="24" height="22" viewBox="0 0 24 22" stroke="#FFC800"><path id="a" d="M12 18l-7.05342303 3.7082039L6.2936609 13.854102.5873218 8.29179607l7.8859667-1.14589804L12 0l3.5267115 7.14589803 7.8859667 1.14589804-5.7063391 5.56230593 1.3470839 7.8541019z"/></svg>
                 </div>
                 <span>{hero.name}</span>
             </div>
