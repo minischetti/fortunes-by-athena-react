@@ -73,8 +73,7 @@ class HeroPage extends React.Component {
 class HeroList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { showContextMenu: false, currentHero: "" };
-        this.showContextMenu = this.showContextMenu.bind(this);
+        this.state = { currentHero: "" };
         this.updateFavoriteHeroes = this.updateFavoriteHeroes.bind(this);
     }
 
@@ -114,30 +113,22 @@ class HeroList extends React.Component {
             const heroPosition = favoriteHeroes.indexOf(hero);
             favoriteHeroes.splice(heroPosition, 1);
             this.props.updateFavoriteHeroesState(favoriteHeroes);
-            this.setState({ showContextMenu: false });
             return;
         }
         // If the hero isn't already a favorite, add it
         if (!favoriteHeroes.includes(hero)) {
             this.props.updateFavoriteHeroesState([...favoriteHeroes, hero]);
-            this.setState({ showContextMenu: false });
             return;
         }
     }
 
-    showContextMenu(hero) {
-        this.setState({ showContextMenu: true, currentHero: hero });
-    }
-
     render() {
         const heroList = heroes.roster.map((hero) =>
-            <Hero key={hero.id} hero={hero} generateFortune={this.props.generateFortune} showContextMenu={this.showContextMenu} updateCurrentHero={this.updateCurrentHero} updateFavoriteHeroes={this.updateFavoriteHeroes} isFavorite={() => this.props.isFavorite(hero.id)}/>
+            <Hero key={hero.id} hero={hero} generateFortune={this.props.generateFortune} updateCurrentHero={this.updateCurrentHero} updateFavoriteHeroes={this.updateFavoriteHeroes} isFavorite={() => this.props.isFavorite(hero.id)}/>
         );
-        const showContextMenu = this.state.showContextMenu;
         const currentHero = this.state.currentHero;
         return (
             <div className="hero-list-container active">
-                {showContextMenu && <ContextMenu currentHero={currentHero} updateFavoriteHeroes={this.updateFavoriteHeroes} isFavorite={this.props.isFavorite}/>}
                 <input type="text" id="heroSearchField" className="search" onKeyDown={event => this.checkKey(event.keyCode)} onChange={event => this.searchList(event.target.value)}></input>
                 <div className="hero-list">{heroList}</div>
             </div>
@@ -181,51 +172,15 @@ class Hero extends React.Component {
 
     render() {
         const hero = this.props.hero;
+        const currentHero = this.props.currentHero;
         const isFavorite = this.state.isFavorite;
         return (
-            <div className={`hero${isFavorite ? " favorite" : ""}`} onClick={() => this.props.generateFortune(hero.id)} onContextMenu={() => this.props.showContextMenu(hero.id)} data-id={hero.id} data-hero={hero.name}>
-                <img className="hero-portrait" src={hero.portrait} style={{backgroundColor: "black"}}/>
-                <img className={`favorite-icon${isFavorite ? " active" : ""}`} src="assets/icons/heart.svg"/>
+            <div className={`hero${isFavorite ? " favorite" : ""}`} data-id={hero.id} data-hero={hero.name}>
+                <img className="hero-portrait"  onClick={() => this.props.generateFortune(hero.id)} src={hero.portrait} style={{backgroundColor: "black"}}/>
+                <div className="favorite-icon-container" onClick={() => this.props.updateFavoriteHeroes(hero.id)}>
+                    <img className={`favorite-icon${isFavorite ? " active" : ""}`} src="assets/icons/star.svg"/>
+                </div>
                 <span>{hero.name}</span>
-            </div>
-        )
-    }
-}
-
-class ContextMenu extends React.Component {
-    constructor(props) {
-        super(props);
-        this.positionMenu = this.positionMenu.bind(this);
-    }
-
-    positionMenu(event) {
-        const contextMenu = document.getElementById("contextMenu");
-        // Position menu at cursor
-        const xPos = event.clientX;
-        const yPos = event.clientY;
-
-        event.preventDefault();
-
-        // Position the menu via CSS
-        contextMenu.style.left = `${xPos}px`;
-        contextMenu.style.top = `${yPos}px`;
-    }
-
-    componentDidMount() {
-        this.positionMenu(event);
-    }
-
-    componentDidUpdate() {
-        this.positionMenu(event);
-    }
-
-    render() {
-        const currentHero = this.props.currentHero;
-        const isFavorite = this.props.isFavorite(currentHero);
-        const favoriteText = isFavorite ? "Remove Favorite" : "Add Favorite";
-        return (
-            <div id="contextMenu">
-                <span onClick={(hero) => this.props.updateFavoriteHeroes(currentHero)}>{favoriteText}</span>
             </div>
         )
     }
