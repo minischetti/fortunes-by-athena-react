@@ -23,6 +23,28 @@ html, body {
   src: url('fonts/big-noodle-oblique.woff') format('woff');
 }
 
+#hero-page {
+    opacity: 1;
+    transition: .3s all;
+}
+
+#hero-page.animate {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#hero-list {
+    opacity: 0;
+    transition: .3s all;
+    pointer-events: none;
+}
+
+#hero-list.animate {
+    opacity: 1;
+    pointer-events: initial;
+ }
+
+
 .mystery-hero-button {
     cursor: pointer;
     position: absolute;
@@ -61,15 +83,6 @@ html, body {
     color: #fff;
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
 .hero-list-container {
     position: absolute;
     top: 0;
@@ -79,7 +92,6 @@ html, body {
     display: flex;
     z-index: 1;
     background-color: rgba(0,0,0,.75);
-    animation: .25s fadeIn;
 }
 
 .hero-list {
@@ -242,40 +254,4 @@ html, body {
 .favorite-icon.active {
     opacity: 1;
     stroke: #FFC800;
-}
-
-/*.hero.favorite .hero-portrait {
-    border-color: red;
-}*/
-
-#contextMenu {
-    /* display: none; */
-    position: absolute;
-    width: 20rem;
-    height: 4rem;
-    background-color: black;
-    color: white;
-    z-index: 1
-}
-
-#contextMenu.active {
-    display: block;
-}
-
-.fade-enter {
-  opacity: 0.01;
-}
-
-.fade-enter.fade-enter-active {
-  opacity: 1;
-  transition: opacity 500ms ease-in;
-}
-
-.fade-exit {
-  opacity: 1;
-}
-
-.fade-exit.fade-exit-active {
-  opacity: 0.01;
-  transition: opacity 500ms ease-in;
 }
